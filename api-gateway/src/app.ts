@@ -10,7 +10,6 @@ import coreOption from "./utils/corsOptions";
 import applyRateLimit from "./middlewares/applyRateLimit";
 import { logger } from "./utils/logger";
 import { StatusCode } from "./utils/StatusCode";
-import BaseCustomError from "./errors/baseCustomError";
 import errorHandler from "./middlewares/errorHandler";
 import applyProxy from "./middlewares/proxy";
 
@@ -19,7 +18,6 @@ const app: Application = express();
 app.set("trust proxy", 1);
 app.use(compression());
 app.use(cookieParser());
-
 app.use(cookieSession(optionKsession));
 // Prevent HTTP Parameter Pollution attacks
 app.use(hpp());

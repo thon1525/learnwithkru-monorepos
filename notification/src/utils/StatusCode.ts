@@ -24,6 +24,5 @@ export enum StatusCode {
   NotImplemented = 501, // The server either does not recognize the request method, or it lacks the ability to fulfill the request.
   BadGateway = 502, // The server was acting as a gateway or proxy and received an invalid response from the upstream server.
   ServiceUnavailable = 503, // The server is currently unavailable (overloaded or down).
-  GatewayTimeout = 504,
-  INTERNAL_SERVER_ERROR, // The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.
+  GatewayTimeout = 504, // The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.
 }

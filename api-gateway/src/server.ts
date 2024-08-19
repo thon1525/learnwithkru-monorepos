@@ -1,12 +1,13 @@
 import app from "./app";
 import { getConfig } from "./utils/createConfig";
-import { logger } from "./utils/logger";
+import { logger, logInit } from "./utils/logger";
 // RUN THE SERVER GATEWAY
 async function Run() {
   try {
     const config = getConfig(process.env.NODE_ENV);
     // active logger
-    logger.info({ env: process.env.NODE_ENV, logLevel: config.logLevel });
+    // Initialize logger
+    logInit({ env: process.env.NODE_ENV, logLevel: process.env.LOG_LEVEL });
     // Start Server
     logger.info(`Gateway server has started with process id ${process.pid}`);
 

@@ -1,0 +1,81 @@
+version: "3.8"
+services:
+  rabbitmq:
+    container_name: rabbitmq_container_verifyTutors
+    image: rabbitmq:3.13.2-management-alpine
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: verifyTutors
+      RABBITMQ_DEFAULT_PASS: verifyTutors
+    ports:
+      - "5672:5672" # AMQP protocol port
+      - "15672:15672" # Management UI
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor_verifyTutors
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:rw"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+    ports:
+      - "8080:8080"
+    restart: always
+    networks:
+      - monitoring   
+  gateway:
+    container_name: gateway_verifyTutors
+    build:
+     context: ./api-gateway
+     dockerfile: Dockerfile
+    restart: always
+    ports: 
+      -  3000:3000 
+    volumes:
+      -  ./api-gateway/src:/app/src
+    env_file: ./api-gateway/configs/.env   
+    environment:
+        AUTH_SERVICE_URL: http://auth:3001
+  notification:
+    container_name: notification_verifyTutors
+    build: 
+      context: ./notification
+      dockerfile: Dockerfile
+    ports:
+      -  3005:3005
+    volumes:  
+      -  ./notification/src:/app/src
+    env_file: ./notification/configs/.env
+    environment:
+       RABBITMQ_ENDPOINT: amqp://verifyTutors:verifyTutors@localhost:5672
+    depends_on:
+     rabbitmq:
+        condition: service_healthy   
+  auth:
+   container_name: auth_verifyTutors
+   build:
+    context: ./auth
+    dockerfile: Dockerfile
+   restart: always
+   ports:
+    -  3001:3001 
+   volumes:
+     -  ./auth/src:/app/src
+     - ./auth/public:/app/public
+   env_file: ./auth/configs/.env    
+   environment:
+     DOCKER_ENV: true
+     RABBITMQ_ENDPOINT: amqp://verifyTutors:verifyTutors@localhost:5672
+   depends_on:
+     rabbitmq:
+      condition: service_healthy  
+networks:
+  monitoring:
+    driver: bridge  # or another driver if you have specific requirements
+
+  

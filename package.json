@@ -1,0 +1,20 @@
+{
+  "name": "verifytutors",
+  "version": "1",
+  "description": "can you verify tutors with platform?",
+  "main": "verifytutors",
+  "repository": "https://github.com/thon1525/learnwithkru-monorepos.git",
+  "author": "thon",
+  "scripts": {
+    "build:docker": "docker-compose up --build",
+    "start:docker": "docker compose up",
+    "stop:docker": "docker-compose stop",
+    "build-up:docker": "docker-compose up --build",
+    "restart:docker": "docker-compose restart",
+    "clear:docker": "docker container prune"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "verifytutors": "file:"
+  }
+}

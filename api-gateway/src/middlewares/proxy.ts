@@ -41,6 +41,7 @@ const proxyConfigs: ProxyConfig = {
         logger.info(
           `Proxied request url: ${proxyReq.protocol}//${proxyReq.host}${proxyReq.path}`
         );
+        logger.info(`Headers Sent: ${JSON.stringify(proxyReq.getHeaders())}`);
       },
       proxyRes: (proxyRes, req, res) => {
         let originalBoby: Buffer[] = [];
@@ -60,6 +61,16 @@ const proxyConfigs: ProxyConfig = {
           try {
             logger.info(`boby string ${bodyString}`);
             responseBody = JSON.parse(bodyString);
+            // If Response Error, Not Modified Response
+            if (responseBody.errors) {
+              return res.status(proxyRes.statusCode!).json(responseBody);
+            }
+            // Store JWT in session
+            if (responseBody.token) {
+              (req as Request).session!.jwt = responseBody.token;
+              res.cookie("persistent", responseBody.token);
+              delete responseBody.token;
+            }
             if (responseBody.redirectUrl) {
               return res.status(proxyRes.statusCode!).json(responseBody);
             }
