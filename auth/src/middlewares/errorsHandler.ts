@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { BaseCustomError } from "../errors/BaseCustomError";
+import { Request, Response, NextFunction } from 'express';
+import { BaseCustomError } from '@auth/errors/BaseCustomError';
 
 export const errorHandler = async (
   error: Error,

@@ -1,5 +1,5 @@
-import { StatusCode } from "../utils/StatusCode";
-import { BaseCustomError } from "./BaseCustomError";
+import { StatusCode } from '@auth/utils/StatusCode';
+import { BaseCustomError } from './BaseCustomError';
 
 export class ApiError extends BaseCustomError {
   constructor(

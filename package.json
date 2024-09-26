@@ -10,8 +10,12 @@
     "start:docker": "docker compose up",
     "stop:docker": "docker-compose stop",
     "build-up:docker": "docker-compose up --build",
+    "dis:docker": "docker system df",
+    "monitor:docker": "docker stats",
     "restart:docker": "docker-compose restart",
-    "clear:docker": "docker container prune"
+    "clear:docker": "docker container prune",
+    "delete:docker": "docker-compose down -v",
+    "clear:images": "docker image prune"
   },
   "license": "MIT",
   "dependencies": {

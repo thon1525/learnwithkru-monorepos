@@ -52,7 +52,7 @@ const proxyConfigs: ProxyConfig = {
           const bodyString = Buffer.concat(originalBoby).toString("utf8");
           let responseBody: {
             message?: string;
-            data?: Array<object>;
+            Data?: Array<object>;
             token?: string;
             redirectUrl?: string;
             errors?: Array<object>;
@@ -66,13 +66,33 @@ const proxyConfigs: ProxyConfig = {
               return res.status(proxyRes.statusCode!).json(responseBody);
             }
             // Store JWT in session
+            logger.info(`responseBody token: ${responseBody.token}`);
             if (responseBody.token) {
               (req as Request).session!.jwt = responseBody.token;
               res.cookie("persistent", responseBody.token);
               delete responseBody.token;
             }
+
             if (responseBody.redirectUrl) {
-              return res.status(proxyRes.statusCode!).json(responseBody);
+              return res.redirect(responseBody.redirectUrl);
+            }
+            if (responseBody.isLogout) {
+              // Clear the persistent cookie
+              logger.info("successfull");
+              res.clearCookie("persistent");
+              if ((req as Request).session!.jwt) {
+                try {
+                  // Manually clear the session data
+                  (req as Request).session = null;
+
+                  return res.end(); // End response after logout
+                } catch (error) {
+                  logger.error("Error clearing session:", error);
+                  return res
+                    .status(500)
+                    .json({ message: "Error clearing session" });
+                }
+              }
             }
             // Modify response to send  the message to the client
             res.json({

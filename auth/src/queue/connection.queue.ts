@@ -1,25 +1,31 @@
 import client, { Channel, Connection } from 'amqplib';
-import { logger } from '../utils/logger';
-import { getConfig } from '../utils/createConfig';
+import { logger } from '@auth/utils/logger';
+import { getConfig } from '@auth/utils/createConfig';
+import { BaseCustomError } from '@auth/errors/BaseCustomError';
+import { StatusCode } from '@auth/utils/StatusCode';
 
 export async function createQueueConnection(): Promise<Channel | undefined> {
-  try {
-    const currentEnv = process.env.NODE_ENV || 'development';
-    const config = getConfig(currentEnv);
-    const rabbitMQUrl = config.rabbitMQ;
-    console.log('session', rabbitMQUrl);
+  const currentEnv = process.env.NODE_ENV || 'development';
+  const config = getConfig(currentEnv);
+  const rabbitMQUrl = config.rabbitMQ;
 
-    // Check if RabbitMQ URL is defined
-    if (!rabbitMQUrl) {
-      throw new Error('RabbitMQ URL is not defined in the configuration');
-    }
+  if (!rabbitMQUrl) {
+    const errorMessage = 'RabbitMQ URL is not defined in the configuration';
+    logger.error(errorMessage);
+    throw new BaseCustomError(errorMessage, StatusCode.ServiceUnavailable);
+  }
+
+  try {
     const connection: Connection = await client.connect(rabbitMQUrl);
     const channel: Channel = await connection.createChannel();
-    logger.info('Auth Server connected to queue successfully...');
+    logger.info('Auth Server connected to queue successfully.');
+
     closeConnection(channel, connection);
     return channel;
   } catch (error) {
-    logger.error(`Auth Server error createQueueConnection() method: ${error}`);
+    logger.error(
+      `Error creating RabbitMQ connection: ${(error as Error).message}`
+    );
     return undefined;
   }
 }

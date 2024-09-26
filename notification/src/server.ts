@@ -14,7 +14,7 @@ async function run() {
     // Initialize Logger
     logInit({ env: process.env.NODE_ENV, logLevel: config.logLevel });
 
-    // start socket server
+    // start socket server​
     // const socketSender = SocketSender.getInstance();
     // socketSender.activate();
     // socketSender.sendSocketApi(new SocketNotificationEmailApi());

@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import { getConfig } from './utils/createConfig';
 import redoc from 'redoc-express';
 // import * as swaggerDocument from "../public/swagger.json";
-
+import compression from 'compression';
 import cors from 'cors';
 import path from 'path';
 import loggerMiddleware from './middlewares/loggerMiddleware';
@@ -10,6 +10,7 @@ import swaggerUi from 'swagger-ui-express';
 import { errorHandler } from './middlewares/errorsHandler';
 import { RegisterRoutes } from './routes/v1/routes';
 const app: Application = express();
+app.use(compression());
 const currentEnv = process.env.NODE_ENV || 'development';
 const config = getConfig(currentEnv);
 //global middleware

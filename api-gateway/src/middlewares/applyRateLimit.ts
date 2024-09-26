@@ -1,6 +1,7 @@
 import express from "express";
 import { getConfig } from "../utils/createConfig";
 import rateLimit from "express-rate-limit";
+import { logger } from "../utils/logger";
 
 const config = getConfig(process.env.NODE_ENV);
 const isDevelopment = config.env === "development";
@@ -18,7 +19,7 @@ const applyRateLimit = (app: express.Application) => {
   );
   try {
   } catch (error: unknown) {
-    // logger.info(`Error applying rate limit middleware : ${error}`);
+    logger.info(`Error applying rate limit middleware : ${error}`);
   }
 };
 

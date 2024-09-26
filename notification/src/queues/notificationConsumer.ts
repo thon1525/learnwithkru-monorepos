@@ -31,12 +31,12 @@ export async function consumeNotificationMessages(
     //     message,
     //     timestamp,
     //   };
-    //   const notificationUserSender = SocketSender.getInstance();
-    //   await notificationUserSender.sendNotification(
-    //     template,
-    //     receiver,
-    //     messageDetailsLocals
-    //   );
+    //   // const notificationUserSender = SocketSender.getInstance();
+    //   // await notificationUserSender.sendNotification(
+    //   //   template,
+    //   //   receiver,
+    //   //   messageDetailsLocals
+    //   // );
     // });
   } catch (error) {
     logger.error(

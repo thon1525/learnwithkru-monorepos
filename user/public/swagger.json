@@ -1,0 +1,335 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"UserTypes": {
+				"properties": {
+					"firstname": {
+						"type": "string"
+					},
+					"lastname": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"picture": {
+						"type": "string",
+						"nullable": true
+					},
+					"authId": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string",
+						"enum": [
+							"USER",
+							"STUDENT",
+							"TUTOR"
+						]
+					},
+					"_id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"firstname",
+					"lastname",
+					"email",
+					"picture",
+					"authId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_UserTypes.firstname-or-lastname-or-picture-or-email-or-authId_": {
+				"properties": {
+					"firstname": {
+						"type": "string"
+					},
+					"lastname": {
+						"type": "string"
+					},
+					"picture": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"authId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"firstname",
+					"lastname",
+					"picture",
+					"email",
+					"authId"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"UpdateType": {
+				"$ref": "#/components/schemas/Pick_UserTypes.firstname-or-lastname-or-picture-or-email-or-authId_"
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "user",
+		"version": "1.0.0",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/v1/users/create": {
+			"post": {
+				"operationId": "Createuser",
+				"responses": {
+					"200": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"DataUser": {
+											"$ref": "#/components/schemas/UserTypes"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"DataUser",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserTypes"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/users/by-auth-id/{authId}": {
+			"get": {
+				"operationId": "GetUserByAuthId",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"DataUser": {
+											"$ref": "#/components/schemas/UserTypes"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"DataUser",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "authId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/users/by-user-id/{userId}": {
+			"get": {
+				"operationId": "GetUserByUserId",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"DataUser": {
+											"$ref": "#/components/schemas/UserTypes"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"DataUser",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/users/update/{authId}": {
+			"patch": {
+				"operationId": "UpdateUserByUserId",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"DataUser": {
+											"$ref": "#/components/schemas/UserTypes"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"DataUser",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "authId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateType"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/users/delete-user/{userId}": {
+			"delete": {
+				"operationId": "DataUserByUserId",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"dataUser": {},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"dataUser",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/user-health": {
+			"get": {
+				"operationId": "CheckHealth",
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

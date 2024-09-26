@@ -1,5 +1,5 @@
 import { Channel } from 'amqplib';
-import { logger } from '../utils/logger';
+import { logger } from '@auth/utils/logger';
 import { createQueueConnection } from './connection.queue';
 
 export async function publishDirectMessage(
@@ -19,7 +19,7 @@ export async function publishDirectMessage(
     await channel.assertExchange(exchangeName, 'direct');
     channel.publish(exchangeName, routingKey, Buffer.from(message));
     logger.info(logMessage);
-  } catch (error: unknown) {
+  } catch (error) {
     logger.error(
       `AuthService Provider publishDirectMessage() method error`,
       error
