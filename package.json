@@ -1,24 +1,30 @@
 {
   "name": "verifytutors",
   "version": "1",
+  "private": "true",
   "description": "can you verify tutors with platform?",
   "main": "verifytutors",
   "repository": "https://github.com/thon1525/learnwithkru-monorepos.git",
   "author": "thon",
+  "workspaces": [
+    "apps/*",
+    "apps/backend/*"
+  ],
   "scripts": {
-    "build:docker": "docker-compose up --build",
-    "start:docker": "docker compose up",
-    "stop:docker": "docker-compose stop",
-    "build-up:docker": "docker-compose up --build",
+    "build:docker": "docker-compose -f ./apps/backend/docker-compose.yaml up --build -d",
+    "start:docker": "docker-compose -f ./apps/backend/docker-compose.yaml up",
+    "stop:docker": "docker-compose  -f ./apps/backend/docker-compose.yaml stop",
+    "build-up:docker": "docker-compose -f ./apps/backend/docker-compose.yaml up -d",
     "dis:docker": "docker system df",
     "monitor:docker": "docker stats",
     "restart:docker": "docker-compose restart",
     "clear:docker": "docker container prune",
-    "delete:docker": "docker-compose down -v",
+    "delete:docker": "docker-compose -f ./apps/backend/docker-compose.yaml down",
     "clear:images": "docker image prune"
   },
   "license": "MIT",
   "dependencies": {
+    "concurrently": "^8.2.2",
     "verifytutors": "file:"
   }
 }
