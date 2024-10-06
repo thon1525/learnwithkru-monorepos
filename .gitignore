@@ -3,7 +3,7 @@
 /node_modules
 /build
 /.vscode
-/.scripts
+/scripts
 # Logs
 logs
 *.log
