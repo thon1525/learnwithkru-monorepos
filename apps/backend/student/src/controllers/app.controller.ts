@@ -15,7 +15,6 @@ export class AppController {
   @Get()
   getHello(): string {
     try {
-      Logger.log('hello thon please');
       return this.appService.getHello();
     } catch (error) {
       throw new HttpException(

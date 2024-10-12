@@ -16,7 +16,6 @@ async function bootstrap() {
   try {
     const app = await NestFactory.create(AppModule);
     const configService = app.get(ConfigService);
-
     const environment = configService.get<string>('NODE_ENV', 'development');
     const port = configService.get<number>('PORT');
     const API_GATEWAY = configService.get<string>('API_GATEWAY');

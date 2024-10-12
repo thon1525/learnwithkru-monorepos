@@ -150,19 +150,19 @@ services:
     networks:
       - monitoring
 
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor
-    container_name: cadvisor_verifyTutors
-    volumes:
-      - "/:/rootfs:ro"
-      - "/var/run:/var/run:rw"
-      - "/sys:/sys:ro"
-      - "/var/lib/docker/:/var/lib/docker:ro"
-    ports:
-      - "8080:8080"
-    restart: always
-    networks:
-      - monitoring
+  # cadvisor:
+  #   image: gcr.io/cadvisor/cadvisor
+  #   container_name: cadvisor_verifyTutors
+  #   volumes:
+  #     - "/:/rootfs:ro"
+  #     - "/var/run:/var/run:rw"
+  #     - "/sys:/sys:ro"
+  #     - "/var/lib/docker/:/var/lib/docker:ro"
+  #   ports:
+  #     - "8080:8080"
+  #   restart: always
+  #   networks:
+  #     - monitoring
 
   node-exporter:
     image: prom/node-exporter
@@ -269,11 +269,24 @@ services:
       PORT: 3003
       MONGODB_URL: mongodb+srv://thournhourn:aS93nmdJEZo8g05M@learnwith-api.d8ozm8e.mongodb.net/verifytutorsAuth
     volumes:
-      - ./student:/app
+      - .:/usr/src/app
+      - /usr/src/app/node_modules  # Ensures container uses its own node_modules
     restart: always
-    command: npm run start:dev
+    command: yarn start:dev
     networks:
       - monitoring
+
+  admin-api:
+    build:
+      context: .
+      dockerfile: ./admin/admin/Dockerfile
+    ports:
+      - "8080:8080"  # Maps port 8080 on the host to port 8080 in the container
+      - "8081:8081"  # Maps port 8081 on the host to port 8081 in the container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development  # Set environment variable for ASP.NET Core
+    volumes:
+      - .:/src  # Optional: Mount your source code to the container for local development
 
 networks:
   monitoring:

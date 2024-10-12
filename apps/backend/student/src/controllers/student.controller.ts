@@ -26,6 +26,7 @@ export class StudentController {
   ): Promise<{ message: string; DataStudent: StudentType }> {
     try {
       // Delegate to service
+      Logger.log(`Data computer Thon`);
       const DataStuent = await this.studentService.Signup(signupBody);
       return {
         message: 'Signup successful',

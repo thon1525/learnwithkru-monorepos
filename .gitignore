@@ -3,7 +3,6 @@
 /node_modules
 /build
 /.vscode
-scripts
 # Logs
 logs
 *.log
@@ -56,4 +55,5 @@ pids
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 scripts/client_secret_*.json
+scripts
 /package-lock.json
